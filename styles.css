@@ -44,6 +44,11 @@ header {
   padding: 0.3rem 0.6rem;
   color: white;
   cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.menu-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* Center Section: Logo + Search + Sort */
@@ -94,7 +99,7 @@ header {
   align-items: center;
   gap: 1rem;
   flex-wrap: nowrap;
-  margin-right: 3.5rem; /* moved further left by increasing margin */
+  margin-right: 3.5rem;
 }
 
 .nav-right a {
@@ -141,6 +146,11 @@ header {
   text-decoration: none;
   margin: 1.2rem 0;
   font-weight: 500;
+  transition: color 0.3s;
+}
+
+.sidebar a:hover {
+  color: #ffcc70;
 }
 
 /* Book Grid */
@@ -151,6 +161,7 @@ header {
   padding: 20px 30px;
 }
 
+/* Book Card Styling */
 .book-card {
   background: #ecf0f1;
   border-radius: 1rem;
@@ -216,6 +227,13 @@ header {
   background: #2980b9;
 }
 
+/* Rating Stars */
+.stars {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
 /* Tooltip */
 .book-intro-tooltip {
   display: none;
@@ -268,5 +286,10 @@ header {
   .search-input {
     width: 100%;
     max-width: 300px;
+  }
+
+  .grid {
+    padding: 10px;
+    gap: 16px;
   }
 }

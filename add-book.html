@@ -127,7 +127,7 @@
       formData.append('pdf', document.getElementById('pdf').files[0]);
 
       try {
-        const res = await fetch('http://localhost:3000/api/books', {
+        const res = await fetch('https://bookdekho-backend.onrender.com/api/books', {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${token}` },
           body: formData

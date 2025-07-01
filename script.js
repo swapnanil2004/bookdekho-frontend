@@ -1,3 +1,5 @@
+const API_BASE = 'https://bookdekho-backend.onrender.com';
+
 const booksGrid = document.getElementById('booksGrid');
 const searchInput = document.getElementById('searchInput');
 const categoryFilter = document.getElementById('categoryFilter');
@@ -6,7 +8,7 @@ let books = [];
 // Load books
 async function fetchBooks() {
   try {
-    const res = await fetch('http://localhost:3000/api/books');
+    const res = await fetch(`${API_BASE}/api/books`);
     books = await res.json();
 
     populateCategoryFilter(books);
@@ -64,7 +66,7 @@ function displayBooks(bookList) {
     bookDiv.innerHTML = `
       <div class="book-intro-tooltip">${book.introduction || 'No introduction available.'}</div>
       <div class="book-image-wrapper">
-        <img src="http://localhost:3000${book.coverImage}" alt="${book.title}" />
+        <img src="${API_BASE}${book.coverImage}" alt="${book.title}" />
       </div>
       <div class="book-info">
         <h3>${book.title}</h3>
@@ -120,7 +122,7 @@ function attachRatingEvents() {
         }
 
         try {
-          const res = await fetch(`http://localhost:3000/api/books/${bookId}/rate`, {
+          const res = await fetch(`${API_BASE}/api/books/${bookId}/rate`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

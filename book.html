@@ -43,7 +43,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const bookId = urlParams.get('id');
 
-    fetch(`http://localhost:3000/api/books`)
+    fetch(`https://bookdekho-backend.onrender.com/api/books`)
       .then(res => res.json())
       .then(books => {
         const book = books.find(b => b._id === bookId);
@@ -51,7 +51,9 @@
           document.getElementById('errorMessage').innerText = '❌ Book not found or PDF missing.';
           return;
         }
-        document.getElementById('pdfViewer').src = 'http://localhost:3000' + book.pdf;
+
+        // Display PDF from live backend
+        document.getElementById('pdfViewer').src = `https://bookdekho-backend.onrender.com${book.pdf}`;
       })
       .catch(err => {
         console.error('Error loading book:', err);

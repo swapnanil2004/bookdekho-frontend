@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BookDekho</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <!-- Left: Menu Icon -->
+      <div class="nav-left">
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+      </div>
+
+      <!-- Center: Logo, Search, and Sort -->
+      <div class="nav-center">
+        <h1 class="logo">📚 BookDekho</h1>
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search books..." />
+        <select id="categoryFilter" class="sort-select">
+          <option value="">Sort</option>
+        </select>
+      </div>
+
+      <!-- Right: Auth Links -->
+      <div class="nav-right" id="authLinks">
+        <a href="login.html">Login</a>
+        <a href="register.html">Register</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <h2>👤 My Profile</h2>
+    <p id="userEmail">Loading...</p>
+    <a href="add-book.html">➕ Add Book</a>
+    <a href="#" onclick="logout()">🚪 Logout</a>
+  </aside>
+
+  <!-- Main Content -->
+  <main>
+    <div id="booksGrid" class="grid"></div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 BookDekho. Built with ❤️ for book lovers.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('active');
+    }
+
+    function logout() {
+      localStorage.removeItem('token');
+      alert('Logged out!');
+      window.location.href = 'index.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const token = localStorage.getItem('token');
+      const sidebarToggle = document.querySelector('.menu-btn');
+      const authLinks = document.getElementById('authLinks');
+      const sidebar = document.getElementById('sidebar');
+      const userEmail = document.getElementById('userEmail');
+
+      if (token) {
+        sidebarToggle.style.display = 'block';
+        authLinks.style.display = 'none';
+        sidebar.style.display = 'block';
+
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          userEmail.textContent = payload.email || 'Logged in';
+        } catch (e) {
+          userEmail.textContent = 'Logged in';
+        }
+      } else {
+        sidebarToggle.style.display = 'block';
+        authLinks.style.display = 'flex';
+        sidebar.classList.remove('active');
+        sidebar.style.display = 'block';
+      }
+    });
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Read Book</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    header {
+      background: #c2a98a;
+      padding: 1rem 2rem;
+      font-weight: bold;
+    }
+    iframe#pdfViewer {
+      width: 100%;
+      height: calc(100vh - 70px); /* full screen minus header height */
+      border: none;
+    }
+    .error {
+      color: red;
+      text-align: center;
+      margin-top: 2rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" style="color: white; text-decoration: none;">← Back to Home</a>
+  </header>
+
+  <main>
+    <iframe id="pdfViewer"></iframe>
+    <div class="error" id="errorMessage"></div>
+  </main>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookId = urlParams.get('id');
+
+    fetch(`http://localhost:3000/api/books`)
+      .then(res => res.json())
+      .then(books => {
+        const book = books.find(b => b._id === bookId);
+        if (!book || !book.pdf) {
+          document.getElementById('errorMessage').innerText = '❌ Book not found or PDF missing.';
+          return;
+        }
+        document.getElementById('pdfViewer').src = 'http://localhost:3000' + book.pdf;
+      })
+      .catch(err => {
+        console.error('Error loading book:', err);
+        document.getElementById('errorMessage').innerText = '❌ Failed to load book';
+      });
+  </script>
+</body>
+</html>

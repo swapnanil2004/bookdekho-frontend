@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Book</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Add Book</h1>
+  </header>
+  <main>
+    <form id="addBookForm" enctype="multipart/form-data">
+      <h3>📘 Book Details</h3>
+      <label>Book Title:</label>
+      <input type="text" id="title" required>
+
+      <label>Author:</label>
+      <input type="text" id="author" required>
+
+      <label>Category:</label>
+      <select id="category" required>
+        <option value="" disabled selected>Select Category</option>
+        <option value="Fiction">Fiction</option>
+        <option value="Non-fiction">Non-fiction</option>
+        <option value="Biography">Biography</option>
+        <option value="Education">Education</option>
+        <option value="Technology">Technology</option>
+        <option value="Comics">Comics</option>
+        <option value="Others">Others</option>
+      </select>
+
+      <h3>🖋️ Writer Info</h3>
+      <label>Writer Full Name:</label>
+      <input type="text" id="writerName" required>
+
+      <label>Writer Username:</label>
+      <input type="text" id="writerUsername">
+
+      <label>Writer Photo:</label>
+      <input type="file" id="writerPhoto" accept="image/*">
+
+      <label>Writer Date of Birth:</label>
+      <input type="date" id="writerDOB">
+
+      <label>Biography:</label>
+      <textarea id="biography" rows="3" cols="40"></textarea>
+
+      <label>Birthplace with Pincode:</label>
+      <input type="text" id="birthPlace">
+
+      <label>Address with Pincode:</label>
+      <input type="text" id="address">
+
+      <label>Writer Email:</label>
+      <input type="email" id="writerEmail">
+
+      <label>Mobile Number:</label>
+      <input type="tel" id="mobile">
+
+      <label>WhatsApp Number:</label>
+      <input type="tel" id="whatsapp">
+
+      <h3>🏢 Publishing Info</h3>
+      <label>Year of Publication:</label>
+      <input type="date" id="yearOfPublication">
+
+      <label>Year of Book Addition:</label>
+      <input type="date" id="yearOfAddition">
+
+      <label>ISBN (optional):</label>
+      <input type="text" id="isbn">
+
+      <label>Publisher Name:</label>
+      <input type="text" id="publisher">
+
+      <label>Printing Press Name:</label>
+      <input type="text" id="printingPress">
+
+      <label>Introduction (50-60 words):</label>
+      <textarea id="introduction" rows="4" cols="40"></textarea>
+
+      <h3>📤 Upload Files</h3>
+      <label>Cover Image (required):</label>
+      <input type="file" id="coverImage" accept="image/*" required>
+
+      <label>PDF File (required):</label>
+      <input type="file" id="pdf" accept="application/pdf" required>
+
+      <button type="submit">Upload Now</button>
+    </form>
+  </main>
+
+  <script>
+    document.getElementById('addBookForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('You need to log in first!');
+        window.location.href = 'login.html';
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('title', document.getElementById('title').value);
+      formData.append('author', document.getElementById('author').value);
+      formData.append('category', document.getElementById('category').value);
+      formData.append('writerName', document.getElementById('writerName').value);
+      formData.append('writerUsername', document.getElementById('writerUsername').value);
+      formData.append('writerPhoto', document.getElementById('writerPhoto').files[0]);
+      formData.append('writerDOB', document.getElementById('writerDOB').value);
+      formData.append('biography', document.getElementById('biography').value);
+      formData.append('birthPlace', document.getElementById('birthPlace').value);
+      formData.append('address', document.getElementById('address').value);
+      formData.append('email', document.getElementById('writerEmail').value);
+      formData.append('mobile', document.getElementById('mobile').value);
+      formData.append('whatsapp', document.getElementById('whatsapp').value);
+      formData.append('yearOfPublication', document.getElementById('yearOfPublication').value);
+      formData.append('yearOfAddition', document.getElementById('yearOfAddition').value);
+      formData.append('isbn', document.getElementById('isbn').value);
+      formData.append('publisher', document.getElementById('publisher').value);
+      formData.append('printingPress', document.getElementById('printingPress').value);
+      formData.append('introduction', document.getElementById('introduction').value);
+      formData.append('coverImage', document.getElementById('coverImage').files[0]);
+      formData.append('pdf', document.getElementById('pdf').files[0]);
+
+      try {
+        const res = await fetch('http://localhost:3000/api/books', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+
+        const data = await res.json();
+        if (data._id) {
+          alert('✅ Book uploaded successfully!');
+          window.location.href = 'home.html';
+        } else {
+          alert('❌ Upload failed: ' + data.error);
+        }
+      } catch (err) {
+        console.error(err);
+        alert('An error occurred while uploading.');
+      }
+    });
+  </script>
+</body>
+</html>
